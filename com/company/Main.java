@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.concurrent.CountDownLatch;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -10,11 +12,74 @@ public class Main {
         //EG: let the circuit be a1 AND b1 where p1 has input a1 into circuit and b1 has input b1 into circuit
 
         //then we can have a structure eg:
-        Wire a1=new Wire();
-        Wire b1=new Wire();
-        Wire result=new Wire(3);
 
-        Gate g1=new Gate(a1,b1,result);
+/*
+        long lStartTime = System.currentTimeMillis();
+
+        ObliviousTransfer ot = new ObliviousTransfer();
+
+        try {
+            ot.exchange();
+        } catch (Exception name) {
+            System.out.println("exception in ot occurred");
+        }
+
+        long lEndTime = System.currentTimeMillis();
+
+        long difference = lEndTime - lStartTime;
+
+        System.out.println("Elapsed milliseconds: " + difference);
+*/
+
+
+        //AsymmetricCipher test = new AsymmetricCipher();
+
+
+        /*
+        SymmetricCipher test = new SymmetricCipher();
+
+
+        try{
+
+            test.testAES();
+        }
+        catch (Exception e){
+            System.out.println("EXCEPTION ENCOUNTERED");
+        }
+
+*/
+
+        int numGates = 4095;
+        int numThreads = 1;
+        System.out.println("starting tests for " + numGates + " gates, " + numThreads + " threads");
+        long lStartTime = System.currentTimeMillis();
+        Conductor conductor = new Conductor(numGates,numThreads);
+
+
+
+/*
+        GateNode[] temp;
+
+        for(int i = 0; i < conductor.garbledDone.length; i++){
+            temp = conductor.garbler.gateTree.getLayer(i);
+
+            System.out.println("Layer " + i );
+            for(int j = 0; j<temp.length; j++){
+                System.out.print(temp[j].type + ", ");
+
+            }
+            System.out.println("");
+
+
+        }
+
+*/
+
+        conductor.conduct();
+
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Total time elapsed is " + (endTime -lStartTime));
 
 
         //Then we send to p2

@@ -15,7 +15,7 @@ import java.security.PublicKey;
 import java.util.Random;
 
 
-import com.company.gate.Gate;
+import com.company.Gate.Gate;
 
     public class SecurityOps
     {
@@ -30,7 +30,7 @@ import com.company.gate.Gate;
         }
 
 
-        static void shuffleLUT(byte[][] lut)
+        public static void shuffleLUT(byte[][] lut)
         {
             // If running on Java 6 or older, use `new Random()` on RHS here
             Random rand = new Random();
@@ -60,7 +60,7 @@ import com.company.gate.Gate;
             String result="";
             for(int j=0;j<byteArray.length;j++)
             {
-                String hex="0"+Integer.toHexString(b[j]&255);
+                String hex="0"+Integer.toHexString(byteArray[j]&255);
                 result+=hex.substring(hex.length()-2);
             }
             return result;
@@ -109,16 +109,32 @@ import com.company.gate.Gate;
 
         public static KeyPair genRSAkeypair() throws Exception
         {
-            //todo
+            System.out.println("gen0");
+
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            System.out.println("gen1");
+            kpg.initialize(1024);
+            System.out.println("gen2");
+            KeyPair kp = kpg.genKeyPair();
+            System.out.println("gen3");
+            return kp;
+
+
         }
 
-        public static byte[] RSAencrypt(byte[] data,PublicKey key) throws Exception
-        {
-         //todo
+        public static byte[] RSAencrypt(byte[] data,PublicKey key) throws Exception {
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] cipherData = cipher.doFinal(data);
+            return cipherData;
+        }
 
         public static byte[] RSAdecrypt(byte[] data,PrivateKey key) throws Exception
         {
-            //todo
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            byte[] cipherData = cipher.doFinal(data);
+            return cipherData;
         }
 
     }
